@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>物品管理</title>
+    <script src="{{ url_for('static', filename='lib/jquery-1.12.4.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/layui/layui.all.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/layui/css/layui.css') }}">
+</head>
+<body>
+
+<div class="layui-main">
+<ul class="layui-nav" lay-filter="">
+  <li class="layui-nav-item"><a href="/index/">物品管理</a></li>
+  <li class="layui-nav-item"><a href="/dingdan/">订单管理</a></li>
+  <li class="layui-nav-item"><a href="/tuihuan/">退换货管理</a></li>
+</ul>
+    <div class="layui-col-md12" style="height: 60px;">
+        <input type="text" id="sc" placeholder="输入商品" class="layui-input" style="display: inline-block; width: 200px;">
+        <button class="layui-btn" id="scbtn">查询</button>
+    </div>
+    <div class="layui-col-md12">
+        <table class="layui-table">
+            <tr>
+                <th>商品名称</th>
+                <th>售价</th>
+                <th>月销量</th>
+                <th>货架</th>
+                <th>良品率</th>
+            </tr>
+            {% for foo in data %}
+                <tr>
+                    <td>{{foo.spmc}}</td>
+                    <td>{{foo.sj}}</td>
+                    <td>{{foo.yxs}}</td>
+                    <td>{{foo.lpl}}</td>
+                    <td>{{foo.hj}}</td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
+<script>
+    $(function () {
+        $('#scbtn').click(function () {
+            var sc = $('#sc').val()
+            window.location.href = '/index/?sc=' + sc
+        })
+    })
+</script>

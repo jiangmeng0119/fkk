@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>物品管理</title>
+    <script src="{{ url_for('static', filename='lib/jquery-1.12.4.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/layui/layui.all.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/layui/css/layui.css') }}">
+    <style>
+        th input{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-main">
+    <ul class="layui-nav" lay-filter="">
+        <li class="layui-nav-item"><a href="/index/">物品管理</a></li>
+        <li class="layui-nav-item"><a href="/dingdan/">订单管理</a></li>
+        <li class="layui-nav-item"><a href="/tuihuan/">退换货管理</a></li>
+    </ul>
+    <div class="layui-col-md12" style="height: 60px;">
+
+        <button class="layui-btn" id="scbtn">退换货</button>
+    </div>
+
+</div>
+
+{#<div class="layui-col-md4" style="width: 300px;">#}
+{#    <input type="text" placeholder="输入物品" class="layui-input">#}
+{#    <input type="text" placeholder="输入退货原因" class="layui-input">#}
+{#    <textarea placeholder="输入退货原因" style="resize: none; width: 300px;height: 100px;" class="layui-textarea">#}
+{#    </textarea>#}
+{#</div>#}
+
+</body>
+</html>
+<script>
+    $(function () {
+        $('#scbtn').click(function () {
+            var index = layer.open({
+                type: 1,
+                area: ['auto', 'auto'],
+                title: '退换货',
+                btn: ['确定', '返回'],
+                content: '<div class="layui-col-md4 th" style="width: 300px;margin-bottom: 20px;">\n' +
+                    '    <input type="text" placeholder="输入物品" class="layui-input" style="margin-bottom: 20px;">\n' +
+                    '    <input type="text" placeholder="输入退货原因" class="layui-input" style="margin-bottom: 20px;">\n' +
+                    '    <textarea placeholder="输入退货原因" style="resize: none; width: 300px;height: 100px;" class="layui-textarea"></textarea>\n' +
+                    '</div>'
+                , yes: function (index, layero) {
+                    layer.msg('退换货成功')
+                    layer.close(index)
+
+                }
+            })
+        })
+    })
+</script>

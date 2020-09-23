@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>物品管理</title>
+    <script src="{{ url_for('static', filename='lib/jquery-1.12.4.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/layui/layui.all.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='lib/layui/css/layui.css') }}">
+</head>
+<body style="position: relative">
+
+<div class="layui-main">
+    <ul class="layui-nav" lay-filter="">
+        <li class="layui-nav-item"><a href="/index/">物品管理</a></li>
+        <li class="layui-nav-item"><a href="/dingdan/">订单管理</a></li>
+        <li class="layui-nav-item"><a href="/tuihuan/">退换货管理</a></li>
+    </ul>
+    <div class="layui-col-md12" style="height: 60px;">
+        <input type="text" id="sc" placeholder="输入商品" class="layui-input" style="display: inline-block; width: 200px;">
+        <button class="layui-btn" id="scbtn">查询</button>
+    </div>
+    <div class="layui-col-md12">
+        <table class="layui-table">
+            <tr>
+                <th>商品名称</th>
+                <th>售价</th>
+                <th>月销量</th>
+                <th>良品率</th>
+                <th>货架</th>
+                <th>操作</th>
+            </tr>
+            {% for foo in data %}
+                <tr>
+                    <td>{{ foo.spmc }}</td>
+                    <td>{{ foo.sj }}</td>
+                    <td>{{ foo.yxs }}</td>
+                    <td>{{ foo.lpl }}</td>
+                    <td>{{ foo.hj }}</td>
+                    <td style="width: 100px;">
+                        <button class="layui-btn addbtn" data="{{ foo.spmc }}" pc="{{ foo.sj }}">加入购物车</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+    </div>
+<!--
+    <div class="layui-col-md2">
+        <div class="gwc layui-col-md12"
+             style=" background: #f3fae9;">
+            <div class="layui-col-md12"
+                 style="line-height: 30px;background: #0d3b46; color: #fff9ec;font-size: 20px; text-align: center">购物车
+            </div>
+            <ul class="gwcjh">
+                {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+                {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+                {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+                {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+
+            </ul>
+            <div class="layui-col-md12" style="text-align: center; margin-top: 50px;">
+                <button class="layui-btn db">打包</button>
+                <span>总价： <span id="zj">0</span></span>
+            </div>
+        </div>
+    </div>-->
+
+</div>
+
+<div class="gwc layui-col-md4" style="width: 200px; background: #f3fae9; top: 0;right: 180px; position: absolute">
+    <div class="layui-col-md12"
+         style="line-height: 30px;background: #0d3b46; color: #fff9ec;font-size: 20px; text-align: center">购物车
+    </div>
+    <ul class="gwcjh">
+        {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+        {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+        {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+        {#        <li>xxxxxsdf <a href="javascript:;" style="position: absolute; right: 0;">删除</a></li>#}
+
+    </ul>
+    <div class="layui-col-md12" style="text-align: center; margin-top: 50px;">
+        <button class="layui-btn db">打包</button>
+        <span>总价： <span id="zj">0</span></span>
+    </div>
+</div>
+
+
+{#<div class="layui-col-md4" style="width: 400px;text-align: center">#}
+{#    <div class="layui-col-md12">#}
+{#        <div class="" style="margin-bottom: 20px;">#}
+{#            <select name="scaddres" id="scaddres" class="layui-select" style="width: 400px;">#}
+{#                <option value="">选择区域</option>#}
+{#                <option value="1">区域一</option>#}
+{#                <option value="2">区域二</option>#}
+{#                <option value="3">区域三</option>#}
+{#                <option value="4">区域四</option>#}
+{#                <option value="5">区域五</option>#}
+{#            </select>#}
+{#        </div>#}
+{##}
+{#        <div class="" style="margin-bottom: 20px;">#}
+{#            <select name="scqs" id="scqs" class="layui-select" style="width: 400px;">#}
+{#                <option value="">选择骑手</option>#}
+{##}
+{#            </select>#}
+{#        </div>#}
+{##}
+{#        <input type="text" class="layui-input" placeholder="输入地址" style="margin-bottom: 20px;">#}
+{#        <button class="layui-btn">确定</button>#}
+{#    </div>#}
+{##}
+{##}
+{#</div>#}
+
+</body>
+</html>
+
+<script>
+    $(function () {
+        var zj = 0
+        // 骑手信息
+        var qslist = {
+            '1': ['骑手A', '骑手B', '骑手C'],
+            '2': ['骑手D', '骑手E'],
+            '3': ['骑手F', '骑手G'],
+            '4': ['骑手H', '骑手I', '骑手J'],
+            '5': ['骑手K'],
+        };
+
+
+        $('#scbtn').click(function () {
+            var sc = $('#sc').val()
+            window.location.href = '/dingdan/?sc=' + sc
+        })
+
+        function get_lo() {
+            zj = 0
+            $.each(localStorage, function (k, v) {
+                if (k !== 'length' && k !== 'key' && k !== 'getItem' && k !== 'setItem' && k !== 'clear' && k !== 'removeItem') {
+                    var li = '<li pc="' + parseFloat(v) + '">' + k + ' <a href="javascript:;" style="position: absolute; right: 0;" class="delbtn" pname="' + k + '">删除</a></li>'
+                    $('.gwcjh').append(li)
+                    zj = zj + parseFloat(v) * 100
+                }
+
+
+            })
+            $('#zj').html(zj / 100);
+        }
+
+        get_lo()
+
+        $('.addbtn').click(function () {
+
+            if (!localStorage.getItem($(this).attr('data'))) {
+                var li = '<li pc="' + parseFloat($(this).attr('pc')) + '">' + $(this).attr('data') + ' <a href="javascript:;" style="position: absolute; right: 0;" class="delbtn" pname="' + $(this).attr('data') + '">删除</a></li>'
+                var add_zj = parseFloat($(this).attr('pc')) * 100
+                zj = zj + add_zj;
+                $('#zj').html(zj / 100);
+                $('.gwcjh').append(li);
+                console.log(zj, add_zj);
+                localStorage.setItem($(this).attr('data'), parseFloat($(this).attr('pc')))
+
+            } else {
+                layer.msg('已在购物车中')
+            }
+
+
+        })
+
+        $('body').delegate('.delbtn', 'click', function () {
+            var del_zj = parseFloat($(this).parent().attr('pc')) * 100
+            console.log(zj, del_zj);
+            zj = zj - del_zj;
+            $('#zj').html(zj / 100);
+            $(this).parent().remove()
+            var name = $(this).attr('pname')
+            console.log(name);
+            localStorage.removeItem($(this).attr('pname'))
+        })
+
+
+        $('.db').click(function () {
+
+            var index = layer.open({
+                type: 1,
+                area: ['auto', 'auto'],
+                title: '下单',
+                btn: ['确定', '返回'],
+                content: '<div class="layui-col-md4" style="width: 400px;text-align: center">\n' +
+                    '    <div class="layui-col-md12">\n' +
+                    '        <div class="" style="margin-bottom: 20px;">\n' +
+                    '            <select name="scaddres" id="scaddres" class="layui-select" style="width: 400px;">\n' +
+                    '                <option value="">选择区域</option>\n' +
+                    '                <option value="1">区域一</option>\n' +
+                    '                <option value="2">区域二</option>\n' +
+                    '                <option value="3">区域三</option>\n' +
+                    '                <option value="4">区域四</option>\n' +
+                    '                <option value="5">区域五</option>\n' +
+                    '            </select>\n' +
+                    '        </div>\n' +
+                    '\n' +
+                    '        <div class="" style="margin-bottom: 20px;">\n' +
+                    '            <select name="scqs" id="scqs" class="layui-select" style="width: 400px;">\n' +
+                    '                <option value="">选择骑手</option>\n' +
+                    '\n' +
+                    '            </select>\n' +
+                    '        </div>\n' +
+                    '\n' +
+                    '        <input type="text" class="layui-input" placeholder="输入地址" style="margin-bottom: 20px;">\n' +
+                    '    </div>\n' +
+                    '\n' +
+                    '\n' +
+                    '</div>'
+                , yes: function (index, layero) {
+                    layer.msg('下单成功')
+                    layer.close(index)
+
+                }
+            })
+
+            // 选择区域
+            $('#scaddres').change(function () {
+                {#console.log($('#scaddres').val());#}
+                var pid = $('#scaddres').val()
+                $('#scqs').html('<option value="">选择骑手</option>')
+
+                $.each(qslist, function (k, v) {
+                    if (pid === k) {
+                        console.log(k, v);
+                        $.each(v, function (j, z) {
+                            var op = '<option value="' + z + '">' + z + '</option>'
+                            $('#scqs').append(op)
+                        })
+                    }
+                })
+            })
+
+
+        })
+
+
+    })
+</script>
